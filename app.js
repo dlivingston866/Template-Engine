@@ -4,16 +4,17 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const jest = require("jest");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-
+let teamArr = [];
 async function start() {
     console.log("Let's make a great team.");
 
-    let teamHTML = "";
+    //let teamHTML = "";
 
     let teamSize;
 
@@ -71,13 +72,13 @@ async function start() {
                 await inquirer.prompt([{
                         type: "input",
                         message: "What is the Manager's office number?",
-                        name: "officeNo"
+                        name: "officeNumber"
                     }])
                     .then((data) => {
 
-                        const manager = new Manager(name, id, email, data.officeNo);
-                        teamMember = fs.readFileSync("templates/manager.html");
-                        teamHTML = teamHTML + "\n" + eval('`' + teamMember + '`');
+                        const manager = new Manager(name, id, email, data.officeNumber);
+                        teamArr.push(manager);
+
                     });
                 break;
 
@@ -90,8 +91,8 @@ async function start() {
                     .then((data) => {
 
                         const engineer = new Engineer(name, id, email, data.github);
-                        teamMember = fs.readFileSync("templates/engineer.html");
-                        teamHTML = teamHTML + "\n" + eval('`' + teamMember + '`');
+                        teamArr.push(engineer);
+
                     });
                 break;
 
@@ -103,23 +104,23 @@ async function start() {
                     }])
                     .then((data) => {
 
-                        const intern = new Intern(name, id, email, data.github);
-                        teamMember = fs.readFileSync("templates/engineer.html");
-                        teamHTML = teamHTML + "\n" + eval('`' + teamMember + '`');
+                        const intern = new Intern(name, id, email, data.school);
+                        teamArr.push(intern);
+
                     });
                 break;
         }
     }
-    const mainHTML = fs.readFileSync("templates/main.html");
+    const mainHTML = render(teamArr)
 
 
-    teamHTML = eval('`' + mainHTML + '`');
 
-    fs.writeFile("output/team.html", teamHTML, function(err) {
+
+    fs.writeFile("output/team.html", mainHTML, function(err) {
         if (err) {
             return console.log(err);
         }
-        console.log("success");
+        console.log("Success!!!");
 
     });
 
