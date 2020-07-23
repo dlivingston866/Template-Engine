@@ -110,7 +110,7 @@ async function start() {
                 break;
         }
     }
-    const mainHTML = fs.readFileSync("tempates/main.html");
+    const mainHTML = fs.readFileSync("templates/main.html");
 
 
     teamHTML = eval('`' + mainHTML + '`');
