@@ -1,7 +1,7 @@
 # Template-Engine
 Generates a web page that displays basic team information.
 
-#On he command line, enter node and the file name.
+# On he command line, enter node and the file name.
 
 douglaslivingston@Douglass-MBP-2 Template-Engine % node app.js
 
